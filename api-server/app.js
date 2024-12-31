@@ -3,6 +3,7 @@ import { connectDB } from './config/connectDB.js';
 import { router } from './routes/index.route.js';
 import { errRes } from './helpers/sendResponse.js';
 import { CustomError, httpStatusCodes } from './constants/constants.js';
+import { initializeRabbitMQ } from './services/rabbitMQ.service.js';
 
 const app = express();
 const PORT = 8080;
@@ -19,6 +20,7 @@ app.use("*", (req, res, next) => {
 app.use(errRes)
 
 app.listen(PORT, async () => {
-  await connectDB()
+  await connectDB();
+  await initializeRabbitMQ();
   console.log(`Server running on http://localhost:${PORT}`);
 })
